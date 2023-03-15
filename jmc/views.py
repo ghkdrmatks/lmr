@@ -9,3 +9,15 @@ def getRestaurant(request):
     datas = Restaurant.objects.all()
     serializer = RestaurantSerializer(datas, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getMenuByRestaurant(request, restaurant):
+    datas = Menu.objects.filter(restaurant=restaurant)
+    serializer = MenuSerializer(datas, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getMenu(request):
+    datas = Menu.objects.all()
+    serializer = MenuSerializer(datas, many=True)
+    return Response(serializer.data)
