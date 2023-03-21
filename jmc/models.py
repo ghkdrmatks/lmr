@@ -17,12 +17,21 @@ class Allergy(models.Model):
         db_table = 'allergy'
 
 
+class Category(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=20, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'category'
+
+
 class Menu(models.Model):
     id = models.IntegerField(primary_key=True)
-    menu_type_code = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=20, blank=True, null=True)
     price = models.IntegerField(blank=True, null=True)
     restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
+    category_name = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -81,7 +90,6 @@ class NutritionInformation(models.Model):
 
 
 class PreferredMenu(models.Model):
-    menu_type_code = models.IntegerField()
     preference = models.IntegerField()
     user = models.ForeignKey('User', models.DO_NOTHING)
 
@@ -95,6 +103,8 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=20)
     address = models.CharField(max_length=45)
     business_hours = models.CharField(max_length=20, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    category_name = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
