@@ -32,6 +32,7 @@ class Menu(models.Model):
     price = models.IntegerField(blank=True, null=True)
     restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
     category_name = models.CharField(max_length=20, blank=True, null=True)
+    image = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -45,17 +46,6 @@ class MenuAllergy(models.Model):
     class Meta:
         managed = False
         db_table = 'menu_allergy'
-
-
-class MenuImage(models.Model):
-    id = models.IntegerField(primary_key=True)
-    filename = models.CharField(max_length=20, blank=True, null=True)
-    filepath = models.CharField(max_length=45, blank=True, null=True)
-    menu = models.ForeignKey(Menu, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'menu_image'
 
 
 class MenuRecommendLog(models.Model):
@@ -105,21 +95,11 @@ class Restaurant(models.Model):
     business_hours = models.CharField(max_length=20, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     category_name = models.CharField(max_length=45, blank=True, null=True)
+    image = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'restaurant'
-
-
-class RestaurantImage(models.Model):
-    id = models.IntegerField(primary_key=True)
-    filename = models.CharField(max_length=20, blank=True, null=True)
-    filepath = models.CharField(max_length=45, blank=True, null=True)
-    restaurant = models.ForeignKey(Restaurant, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'restaurant_image'
 
 
 class Review(models.Model):
@@ -128,21 +108,11 @@ class Review(models.Model):
     content = models.TextField(blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING)
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
+    image = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'review'
-
-
-class ReviewImage(models.Model):
-    id = models.IntegerField(primary_key=True)
-    fllename = models.CharField(max_length=20, blank=True, null=True)
-    filepath = models.CharField(max_length=45, blank=True, null=True)
-    review = models.ForeignKey(Review, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'review_image'
 
 
 class User(models.Model):
