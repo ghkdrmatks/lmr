@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('restaurant', views.getRestaurant, name="getRestaurant"),
-    path('menu/<int:restaurant>', views.getMenuByRestaurant, name="getMenubyRestaurant"),
-    path('menu', views.getMenu, name="getMenu"),
+    path('restaurant/<int:restaurant>/menu', views.getMenuByRestaurant, name="getMenuByRestaurant"),
+    path('restaurant/<int:restaurant>/review', views.getReviewByRestaurant, name="getReviewByRestaurant"),
+    path('menu/<int:menu>/nutrition', views.getNutritionByMenu, name="getNutritionByMenu"),
 ]
