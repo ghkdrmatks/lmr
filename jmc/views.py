@@ -30,7 +30,7 @@ def getReviewByRestaurant(request, restaurant):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getNutritionByMenu(request, restaurant, menu):
+def getNutritionByMenu(request, menu):
     datas = NutritionInformation.objects.filter(menu=menu)
     serializer = NutritionSerializer(datas, many=True)
     return Response(serializer.data)
