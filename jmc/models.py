@@ -26,17 +26,21 @@ class Category(models.Model):
         db_table = 'category'
 
 
+def MenuImagePath(instance, filename):
+    restaurant = instance.restaurant
+    return "menu/%s/%s" % (restaurant,filename)
+
 class Menu(models.Model):
     id = models.IntegerField(primary_key=True)
     restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
     category_name = models.CharField(max_length=20, blank=True, null=True)
     name = models.CharField(max_length=20, blank=True, null=True)
     price = models.IntegerField(blank=True, null=True)    
-    image = models.ImageField(upload_to='menu/',blank=True, null=True)
+    image = models.ImageField(upload_to=MenuImagePath ,blank=True, null=True)
 
     class Meta:
         managed = True
-        db_table = 'menu'
+        db_table = 'menu' 
 
 
 class MenuAllergy(models.Model):
