@@ -28,10 +28,10 @@ class Category(models.Model):
 
 class Menu(models.Model):
     id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=20, blank=True, null=True)
-    price = models.IntegerField(blank=True, null=True)
     restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
     category_name = models.CharField(max_length=20, blank=True, null=True)
+    name = models.CharField(max_length=20, blank=True, null=True)
+    price = models.IntegerField(blank=True, null=True)    
     image = models.ImageField(upload_to='menu/',blank=True, null=True)
 
     class Meta:
