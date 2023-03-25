@@ -13,7 +13,7 @@ class Allergy(models.Model):
     allergy_name = models.CharField(db_column='allergy_ name', max_length=20, blank=True, null=True)  # Field renamed to remove unsuitable characters.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'allergy'
 
 
@@ -22,7 +22,7 @@ class Category(models.Model):
     name = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'category'
 
 
@@ -32,10 +32,10 @@ class Menu(models.Model):
     price = models.IntegerField(blank=True, null=True)
     restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
     category_name = models.CharField(max_length=20, blank=True, null=True)
-    image = models.CharField(max_length=45, blank=True, null=True)
+    image = models.ImageField(upload_to='menu/',blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'menu'
 
 
@@ -44,7 +44,7 @@ class MenuAllergy(models.Model):
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'menu_allergy'
 
 
@@ -55,7 +55,7 @@ class MenuRecommendLog(models.Model):
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'menu_recommend_log'
 
 
@@ -75,7 +75,7 @@ class NutritionInformation(models.Model):
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nutrition_information'
 
 
@@ -84,7 +84,7 @@ class PreferredMenu(models.Model):
     user = models.ForeignKey('User', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'preferred_menu'
 
 
@@ -95,10 +95,10 @@ class Restaurant(models.Model):
     business_hours = models.CharField(max_length=20, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     category_name = models.CharField(max_length=45, blank=True, null=True)
-    image = models.CharField(max_length=45, blank=True, null=True)
+    image = models.ImageField(upload_to='restaurant/',blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'restaurant'
 
 
@@ -108,10 +108,10 @@ class Review(models.Model):
     content = models.TextField(blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING)
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
-    image = models.CharField(max_length=45, blank=True, null=True)
+    image = models.ImageField(upload_to='review/',blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'review'
 
 
@@ -123,7 +123,7 @@ class User(models.Model):
     age = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user'
 
 
@@ -132,5 +132,5 @@ class UserAllergy(models.Model):
     allergy = models.ForeignKey(Allergy, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user_allergy'
