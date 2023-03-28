@@ -24,8 +24,7 @@ def getMenu(request):
 
 @api_view(['GET'])
 def getReviewByRestaurant(request, restaurant):
-    menu_ids = Menu.objects.filter(restaurant=restaurant).values_list('id', flat=True)
-    reviews = Review.objects.filter(menu__in=menu_ids)
+    reviews = Review.objects.filter(restaurant=restaurant)
     serializer = ReviewSerializer(reviews, many=True)
     return Response(serializer.data)
 
