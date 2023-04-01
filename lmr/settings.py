@@ -30,9 +30,7 @@ SECRET_KEY = db_setting.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 ALLOWED_HOSTS = ['127.0.0.1','52.78.72.175','ec2-52-78-72-175.ap-northeast-2.compute.amazonaws.com']
-
 
 # Application definition
 
@@ -47,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'accounts',
+    'recommendation', # 메뉴 추천시스템 추가
 ]
 
 MIDDLEWARE = [
@@ -108,6 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
+# 언어와 시간 한국
 LANGUAGE_CODE = 'ko-kr'
 
 TIME_ZONE = 'Asia/Seoul'
