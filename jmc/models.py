@@ -157,7 +157,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     NICKNAME_FIELD = 'nickname'
     GENDER_FIELD = 'gender'
     AGE_FIELD = 'age'
-    INTRODUCTION = 'introduction'
+    INTRODUCTION_FIELD = 'introduction'
 
     class Meta:
         verbose_name = _('user')
