@@ -20,6 +20,7 @@ class UserCreateSerializer(serializers.Serializer):
             gender=validated_data['gender'],
             age=validated_data['age'],
             introduction=validated_data['introduction'],
+        )
         user.set_password(validated_data['password']) 
         user.save()
         return user
