@@ -7,6 +7,23 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Max
 import random
 import requests
+from math import radians, sin, cos, sqrt, atan2
+
+
+def distance(lat1, lon1, lat2, lon2):
+    R = 6371 # 지구의 반경 (km)
+    #lat1 = float(lat1)
+    #lon1 = float(lon1)
+    dLat = radians(lat2 - lat1)
+    dLon = radians(lon2 - lon1)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+
+    a = sin(dLat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dLon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    distance = R * c
+    return distance
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -74,21 +91,28 @@ def getReview(request, id):
     except Review.DoesNotExist:
         return Response(status=404)
     serializer = ReviewGetSerializer(data)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET']) # 사용자가 작성한 리뷰 조회
 @permission_classes([IsAuthenticated])
 def getUserReview(request):
     tmp = Review.objects.filter(user_id=request.user.id)
     serializer = ReviewGetSerializer(tmp, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST']) # 리뷰 작성 로직
 @permission_classes([IsAuthenticated])
 def postReview(request):
     if request.method == 'POST':
         uid = {"user":request.user.id}
-        datas = dict(request.data, **uid)
+        #datas = dict(request.data, **uid)
+        datas = {"rating" : request.POST['rating'],
+                 "content" : request.POST['content'],
+                 "menu" : request.POST['menu'],
+                 "restaurant" : request.POST['restaurant']}
+        image = {"image":request.FILES['image']}
+        datas.update(uid)
+        datas.update(image)
         serializer = ReviewPostSerializer(data=datas)
         if serializer.is_valid():
             serializer.save()
@@ -150,6 +174,7 @@ def MypageView(request):
     if request.method == 'GET':
         tmp = User.objects.get(id=request.user.id)
         return Response({
+            "id":request.user.id,
             "nickname":tmp.nickname,
             "email":tmp.email,
             "introduction":tmp.introduction,
@@ -180,11 +205,42 @@ def AddressView(request):
     
     # 응답 처리
     if response.status_code == 200:
-        result = response.json()['documents'][0]['address']['address_name']
+        try:
+            result = response.json()['documents'][0]['address']['address_name']
+        except:
+            result = 'Failed to get address'
+            return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
     else:
         result = 'Failed to get address'
+        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'result': result})
+    return Response({'result': result}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def AroundRestaurant(request):
+    mylongitude = request.data.get('longitude')
+    mylatitude = request.data.get('latitude')
+    mylongitude = float(mylongitude)
+    mylatitude = float(mylatitude)
+
+
+    tmp = Restaurant.objects.filter(address__contains='')
+    serializer = AroundRestaurantSerializer(tmp, context={'request': request}, many=True)
+
+    restlist = []
+    
+    i = 0
+    n = len(serializer.data)
+    while i<n:
+        dist = distance(mylatitude, mylongitude, serializer.data[i]['latitude'], serializer.data[i]['longitude'])
+        if dist <= 1:
+            serializer.data[i]['distance'] = int(dist * 1000)
+            restlist.append(serializer.data[i])
+        i+=1
+
+    return Response(restlist, status=200)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

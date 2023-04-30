@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'accounts',
-    'recommendation', # 메뉴 추천시스템 추가
+    'recommendation',
     'django_cleanup.apps.CleanupConfig',
 ]
 
