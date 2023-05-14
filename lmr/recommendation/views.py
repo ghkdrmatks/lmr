@@ -34,7 +34,7 @@ restaurant = pd.DataFrame(list(restaurant_db.values()))
 
 
 # 추천시스템 함수 작성
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def rcm(request):
 
@@ -66,7 +66,7 @@ def rcm(request):
         elif i['preference'] == -1:
             dislike_menu_list.append(i['menu_id'])
 
-    # 2) 특징 데이터를 사용한 내용 기반 필터링
+    # 2) 특징 데이터를 사용하여 텍스트 특징 추출
 
     # 메뉴 특징 데이터 생성 및 menu에 컬럼 추가
     # nutrient_menu 데이터의 ingredient 피처를 menu_id 기준으로 정렬
@@ -93,7 +93,7 @@ def rcm(request):
 
     for i in like_menu_list:
         for j in range(len(menu)):
-            if i == j:
+            if i == menu.iloc[j]['id']:
                 feature = menu.iloc[j]['feature']
         
         index = indices[feature]
